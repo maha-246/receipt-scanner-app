@@ -13,8 +13,8 @@ class Document(Base):
     # Defining table columns
     id = Column(Integer, primary_key = True, index = True)
     image_path = Column(String, nullable = True)
-    doc_types = Column(String, default = "receipt")
-    marchant_name = Column(String, nullable = True)
+    doc_type = Column(String, default = "receipt")
+    merchant_name = Column(String, nullable = True)
     doc_date  = Column(String, nullable = True)
     total_amount = Column(String, nullable = True)
     currency = Column(String, default = "USD")

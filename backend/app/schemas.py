@@ -12,7 +12,7 @@ class LineItemCreate(BaseModel):
 class DocumentCreate(BaseModel):
     image_path: Optional[str] = None
     doc_type: str = "receipt"
-    marchant_name: Optional[str] = None
+    merchant_name: Optional[str] = None
     doc_date: Optional[str] = None
     total_amount: Optional[float] = None
     currency: str = "USD"
@@ -34,7 +34,7 @@ class Config:
 
 class DocumentOut(BaseModel):
     id : int
-    marchant_name: Optional[str] = None
+    merchant_name: Optional[str] = None
     doc_date: Optional[str] = None
     total_amount: Optional[float] = None
 

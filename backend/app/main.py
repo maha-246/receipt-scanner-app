@@ -61,7 +61,7 @@ def health():
 # we send the db session and validated payload into the crud operation
 @app.post("/documents", response_model = schemas.DocumentOut)
 def create_document(payload: schemas.DocumentCreate, db: Session = Depends(get_db)):
-    return crud.create_document(payload, db)
+    return crud.create_document(db, payload)
 
 # Run this function when client wants to read multiple documentss
 @app.get("/documents", response_model = list[schemas.DocumentOut])
@@ -70,20 +70,20 @@ def get_documents(db: Session = Depends(get_db), limit: int = 50):
 
 # Run funtion when client wants  to update document
 # This function calls crud operations, store the result and if doc found, updates doc. 
-@app.put("/documents/{document_id}", response_model=schemas.DocumentOut)
+@app.put("/documents/{document_id}", response_model=schemas.DocumentUpdate)
 def update_document(
     document_id: int,
-    payload: schemas.DocumentOut,
+    payload: schemas.DocumentUpdate,
     db: Session = Depends(get_db)
 ):
-    doc = crud.update_document(document_id, payload, db)
+    doc = crud.update_document(db, document_id, payload)
     if not doc:
         raise HTTPException(status_code=404, detail="Document not found")
     
     return doc
 
 # Run function to delete document by id
-@app.delete("/documents/{docuemnt_id}")
+@app.delete("/documents/{document_id}")
 def delete_document(document_id: int, db: Session = Depends(get_db)):
     doc = crud.delete_document(db, document_id)
     if not doc:
