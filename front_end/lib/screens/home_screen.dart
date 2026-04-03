@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../models/document.dart';
 import '../services/api_service.dart';
+import 'add_receipt_screen.dart';
+import 'receipt_detail_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -75,6 +77,17 @@ class _HomeScreenState extends State<HomeScreen> {
               return Card(
                 margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                 child: ListTile(
+                  onTap: () async {
+                    final result = await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ReceiptDetailScreen(document: doc),
+                      ),
+                    );
+                    if (result == true) { // If it was deleted, refresh!
+                      _refreshDocuments();
+                    }
+                  },
                   leading: const CircleAvatar(
                     backgroundColor: Colors.amber, // Yellow accent
                     child: Icon(Icons.receipt, color: Colors.black87),
@@ -102,11 +115,17 @@ class _HomeScreenState extends State<HomeScreen> {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // TODO: Build the Add Receipt Screen in Step 4 and route there!
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Add Receipt screen coming in next step!')),
+        onPressed: () async {
+          // Navigate to the form
+          final result = await Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const AddReceiptScreen()),
           );
+          
+          // If the form passes back 'true', it means a receipt was successfully saved!
+          if (result == true) {
+             _refreshDocuments(); // Re-fetch the data to show the new receipt!
+          }
         },
         child: const Icon(Icons.add),
       ),
