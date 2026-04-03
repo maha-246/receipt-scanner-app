@@ -31,6 +31,7 @@ To run:
 """
 
 from fastapi import FastAPI, Depends, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 
 from app.database import Base, engine, get_db
@@ -42,6 +43,15 @@ Base.metadata.create_all(bind=engine)
 # Create the Fast API App
 # app is a server backend object
 app = FastAPI(title="Receipt Tracker API")
+
+# Add CORS middleware specifically so Flutter Web (Chrome/Edge) can talk to us locally
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"], # Allows all web domains during development
+    allow_credentials=True,
+    allow_methods=["*"], # Allows GET, POST, PUT, DELETE
+    allow_headers=["*"], 
+)
 
 # this is root route
 # run this function if someone sends a get request 
